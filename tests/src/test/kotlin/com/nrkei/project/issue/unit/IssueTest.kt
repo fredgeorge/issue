@@ -10,6 +10,7 @@ import com.nrkei.project.issue.Issue
 import com.nrkei.project.issue.Issue.IssueState.OPEN
 import com.nrkei.project.issue.IssueParty
 import com.nrkei.project.issue.IssueSet
+import com.nrkei.project.issue.IssueType
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -19,6 +20,7 @@ internal class IssueTest: IssueParty {
     @Test fun `can create and resolve Issues`() {
         IssueSet().also { issueSet ->
             TestIssue(this, "A").also { issue ->
+                assertEquals(0, issueSet.issues(OPEN).size)
                 issueSet.raise(issue)
                 issueSet.issues(OPEN).also { issues ->
                     assertEquals(1, issues.size)
@@ -28,5 +30,11 @@ internal class IssueTest: IssueParty {
         }
     }
 
-    private class TestIssue(raisedBy: IssueParty, val description: String): Issue(raisedBy)
+    private class TestIssue(raisedBy: IssueParty, val description: String): Issue(raisedBy) {
+        companion object {
+            val TEST_ISSUE = object : IssueType {}
+        }
+
+        override val issueType = TEST_ISSUE
+    }
 }

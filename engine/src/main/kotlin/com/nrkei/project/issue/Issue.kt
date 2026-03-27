@@ -8,6 +8,8 @@ package com.nrkei.project.issue
 
 // Understands something aberrant in a process
 abstract class Issue(private val raisedBy: IssueParty) {
+    abstract val issueType: IssueType
+
     private lateinit var closedBy: IssueParty
     private var state: State = IssueState.OPEN
 

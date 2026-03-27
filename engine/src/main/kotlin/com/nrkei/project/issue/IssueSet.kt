@@ -11,7 +11,10 @@ import com.nrkei.project.issue.Issue.Companion.filter
 
 // Understands abberations in a process
 class IssueSet {
-    private val issues = mutableSetOf<Issue>()
-    fun raise(issue: Issue) = issues.add(issue)
-    fun issues(state: IssueState) = issues.filter(state)
+    private val issues = mutableMapOf<IssueType, MutableSet<Issue>>()
+
+    fun raise(issue: Issue) =
+        issues.getOrPut(issue.issueType) { mutableSetOf() }.add(issue)
+
+    fun issues(state: IssueState) = issues.flatMap { it.value }.filter(state)
 }
