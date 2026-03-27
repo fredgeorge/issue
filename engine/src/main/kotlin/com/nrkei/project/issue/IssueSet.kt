@@ -17,4 +17,12 @@ class IssueSet {
         issues.getOrPut(issue.issueType) { mutableSetOf() }.add(issue)
 
     fun issues(state: IssueState) = issues.flatMap { it.value }.filter(state)
+
+    fun issues(issueType: IssueType) = issues.getOrPut(issueType) { mutableSetOf() }
+
+    fun issues(issueType: IssueType, state: Issue.State) =
+        issues.getOrPut(issueType) { mutableSetOf() }.filter(state)
+
+    fun issues(state: Issue.State, issueType: IssueType) =
+        issues(issueType, state)
 }

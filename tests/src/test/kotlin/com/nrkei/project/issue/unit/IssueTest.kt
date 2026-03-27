@@ -11,6 +11,7 @@ import com.nrkei.project.issue.Issue.IssueState.OPEN
 import com.nrkei.project.issue.IssueParty
 import com.nrkei.project.issue.IssueSet
 import com.nrkei.project.issue.IssueType
+import com.nrkei.project.issue.unit.IssueTest.TestIssue.Companion.TEST_ISSUE
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -21,9 +22,15 @@ internal class IssueTest: IssueParty {
         IssueSet().also { issueSet ->
             TestIssue(this, "A").also { issue ->
                 assertEquals(0, issueSet.issues(OPEN).size)
+                assertEquals(0, issueSet.issues(TEST_ISSUE).size)
+                assertEquals(0, issueSet.issues(TEST_ISSUE, OPEN).size)
+                assertEquals(0, issueSet.issues(OPEN, TEST_ISSUE).size)
                 issueSet.raise(issue)
                 issueSet.issues(OPEN).also { issues ->
                     assertEquals(1, issues.size)
+                    assertEquals(1, issueSet.issues(TEST_ISSUE).size)
+                    assertEquals(1, issueSet.issues(TEST_ISSUE, OPEN).size)
+                    assertEquals(1, issueSet.issues(OPEN, TEST_ISSUE).size)
                     assertEquals("A", (issues as List<TestIssue>).first().description)
                 }
             }

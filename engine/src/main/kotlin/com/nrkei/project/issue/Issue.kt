@@ -14,7 +14,7 @@ abstract class Issue(private val raisedBy: IssueParty) {
     private var state: State = IssueState.OPEN
 
     companion object {
-        internal fun Iterable<Issue>.filter(state: IssueState) =
+        internal fun Iterable<Issue>.filter(state: State) =
             this.filter { it.state == state }
     }
 
