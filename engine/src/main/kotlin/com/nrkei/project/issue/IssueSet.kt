@@ -6,28 +6,43 @@
 
 package com.nrkei.project.issue
 
-import com.nrkei.project.issue.Issue.IssueState
 import com.nrkei.project.issue.Issue.Companion.filter
 import com.nrkei.project.issue.Issue.Companion.filterByState
 
 // Understands aberrations in a process
 class IssueSet {
-    private val issues = mutableMapOf<IssueType<*>, MutableSet<Issue<*>>>()
+    private val buckets = mutableMapOf<IssueType<*>, Bucket<*>>()
 
-    fun <I: Issue<I>>raise(issue: I) =
-        issues.getOrPut(issue.issueType) { mutableSetOf() }.add(issue)
+    fun <I : Issue<I>> raise(issue: I) {
+        bucket(issue.issueType).add(issue)
+    }
 
-    fun issues(state: IssueState) = issues.flatMap { it.value }.filterByState(state)
+    fun issues(state: Issue.IssueState): List<Issue<*>> =
+        buckets.values.flatMap { it.allIssues() }.filterByState(state)
 
     fun <I : Issue<I>> issues(issueType: IssueType<I>): List<I> =
-        issues[issueType].orEmpty().map {
-            @Suppress("UNCHECKED_CAST")
-            it as I
-        }
+        bucket(issueType).all()
 
     fun <I : Issue<I>> issues(issueType: IssueType<I>, state: Issue.State): List<I> =
         issues(issueType).filter(state)
 
-    fun <I : Issue<I>> issues(state: Issue.State, issueType: IssueType<I>) =
+    fun <I : Issue<I>> issues(state: Issue.State, issueType: IssueType<I>): List<I> =
         issues(issueType, state)
+
+    @Suppress("UNCHECKED_CAST")
+    private fun <I : Issue<I>> bucket(issueType: IssueType<I>): Bucket<I> =
+        buckets.getOrPut(issueType) { Bucket(issueType) } as Bucket<I>
+
+    private class Bucket<I : Issue<I>>(private val issueType: IssueType<I>) {
+        private val issues = mutableSetOf<I>()
+
+        fun add(issue: I) {
+            require(issue.issueType == issueType)
+            issues.add(issue)
+        }
+
+        fun all(): List<I> = issues.toList()
+
+        fun allIssues(): List<Issue<*>> = all()
+    }
 }
