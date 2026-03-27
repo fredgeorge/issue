@@ -1,2 +1,2 @@
-rootProject.name = "kotlin-gradle-template"
+rootProject.name = "issue"
 include("engine", "tests")
