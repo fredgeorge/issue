@@ -8,21 +8,26 @@ package com.nrkei.project.issue
 
 import com.nrkei.project.issue.Issue.IssueState
 import com.nrkei.project.issue.Issue.Companion.filter
+import com.nrkei.project.issue.Issue.Companion.filterByState
 
-// Understands abberations in a process
+// Understands aberrations in a process
 class IssueSet {
-    private val issues = mutableMapOf<IssueType, MutableSet<Issue>>()
+    private val issues = mutableMapOf<IssueType<*>, MutableSet<Issue<*>>>()
 
-    fun raise(issue: Issue) =
+    fun <I: Issue<I>>raise(issue: I) =
         issues.getOrPut(issue.issueType) { mutableSetOf() }.add(issue)
 
-    fun issues(state: IssueState) = issues.flatMap { it.value }.filter(state)
+    fun issues(state: IssueState) = issues.flatMap { it.value }.filterByState(state)
 
-    fun issues(issueType: IssueType) = issues.getOrPut(issueType) { mutableSetOf() }
+    fun <I : Issue<I>> issues(issueType: IssueType<I>): List<I> =
+        issues[issueType].orEmpty().map {
+            @Suppress("UNCHECKED_CAST")
+            it as I
+        }
 
-    fun issues(issueType: IssueType, state: Issue.State) =
-        issues.getOrPut(issueType) { mutableSetOf() }.filter(state)
+    fun <I : Issue<I>> issues(issueType: IssueType<I>, state: Issue.State): List<I> =
+        issues(issueType).filter(state)
 
-    fun issues(state: Issue.State, issueType: IssueType) =
+    fun <I : Issue<I>> issues(state: Issue.State, issueType: IssueType<I>) =
         issues(issueType, state)
 }

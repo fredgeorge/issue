@@ -7,5 +7,4 @@
 package com.nrkei.project.issue
 
 // Understands classifications of Issues
-interface IssueType {
-}
+interface IssueType<I: Issue<I>>
