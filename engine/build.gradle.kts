@@ -12,8 +12,7 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.jackson.kotlin)
-    implementation(libs.jackson.databind)
+
 }
 
 java {
