@@ -21,7 +21,7 @@ abstract class Issue<I: Issue<I>>(private val raisedBy: IssueParty) {
             this.filter { it.state == state }
     }
 
-    fun be(state: State, closedBy: IssueParty) = state.be(state, closedBy, this)
+    fun be(newState: State, closedBy: IssueParty) = state.be(newState, closedBy, this)
 
     override fun toString() = "${this.javaClass.simpleName} in state $state raised by ${raisedBy.name}"
 
@@ -35,7 +35,7 @@ abstract class Issue<I: Issue<I>>(private val raisedBy: IssueParty) {
         OPEN {
             override fun be(state: State, closedBy: IssueParty, issue: Issue<*>) {
                 issue.state = state.also {
-                    require(state != this) { "Issue is already open" }
+                    check(state != this) { "Issue is already open" }
                     issue.closedBy = closedBy
                 }
             }
