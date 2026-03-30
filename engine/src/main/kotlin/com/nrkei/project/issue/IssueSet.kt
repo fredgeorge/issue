@@ -17,7 +17,7 @@ class IssueSet {
         bucket(issue.issueType).add(issue)
     }
 
-    fun issues(state: Issue.IssueState): List<Issue<*>> =
+    fun issues(state: Issue.State): List<Issue<*>> =
         buckets.values.flatMap { it.allIssues() }.filterByState(state)
 
     fun <I : Issue<I>> issues(issueType: IssueType<I>): List<I> =
@@ -29,11 +29,17 @@ class IssueSet {
     fun <I : Issue<I>> issues(state: Issue.State, issueType: IssueType<I>): List<I> =
         issues(issueType, state)
 
+    fun accept(visitor: IssueVisitor) {
+        visitor.preVisit(this)
+        buckets.values.forEach { it.accept(visitor) }
+        visitor.postVisit(this)
+    }
+
     @Suppress("UNCHECKED_CAST")
     private fun <I : Issue<I>> bucket(issueType: IssueType<I>): Bucket<I> =
         buckets.getOrPut(issueType) { Bucket(issueType) } as Bucket<I>
 
-    private class Bucket<I : Issue<I>>(private val issueType: IssueType<I>) {
+    class Bucket<I : Issue<I>> internal constructor(private val issueType: IssueType<I>) {
         private val issues = mutableSetOf<I>()
 
         fun add(issue: I) {
@@ -44,5 +50,11 @@ class IssueSet {
         fun all(): List<I> = issues.toList()
 
         fun allIssues(): List<Issue<*>> = all()
+
+        internal fun accept(visitor: IssueVisitor) {
+            visitor.preVisit(this, issueType)
+            issues.forEach { it.accept(visitor) }
+            visitor.postVisit(this, issueType)
+        }
     }
 }

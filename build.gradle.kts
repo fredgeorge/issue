@@ -10,7 +10,7 @@ plugins {
 
 allprojects {
     group = "com.nrkei.project"
-    version = "1.0.1"
+    version = "1.0.2"
 
     repositories {
         mavenLocal()

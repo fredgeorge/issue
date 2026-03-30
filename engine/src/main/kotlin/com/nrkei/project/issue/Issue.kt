@@ -6,42 +6,42 @@
 
 package com.nrkei.project.issue
 
+import com.nrkei.project.issue.Issue.State.OPEN
+
 // Understands something aberrant in a process
-abstract class Issue<I: Issue<I>>(private val raisedBy: IssueParty) {
+abstract class Issue<I : Issue<I>>(private val raisedBy: IssueParty) {
     abstract val issueType: IssueType<I>
 
-    private lateinit var closedBy: IssueParty
-    private var state: State = IssueState.OPEN
+    private var closedBy: IssueParty? = null
+    private var state: State = OPEN
 
     companion object {
-        internal fun <I: Issue<I>> Iterable<I>.filter(state: State) =
+        internal fun <I : Issue<I>> Iterable<I>.filter(state: State) =
             this.filter { it.state == state }
 
         internal fun Iterable<Issue<*>>.filterByState(state: State) =
             this.filter { it.state == state }
     }
 
-    fun be(newState: State, closedBy: IssueParty) = state.be(newState, closedBy, this)
-
-    override fun toString() = "${this.javaClass.simpleName} in state $state raised by ${raisedBy.name}"
-
-    sealed interface State {
-        fun be(state: State, closedBy: IssueParty, issue: Issue<*>) {
-            throw IllegalStateException("Cannot change state of a completed Issue")
-        }
+    fun be(newState: State, closedBy: IssueParty) {
+        state = state.nextState(newState)
+        this.closedBy = closedBy
     }
 
-    enum class IssueState : State {
-        OPEN {
-            override fun be(state: State, closedBy: IssueParty, issue: Issue<*>) {
-                issue.state = state.also {
-                    check(state != this) { "Issue is already open" }
-                    issue.closedBy = closedBy
-                }
-            }
-        },
+    fun accept(visitor: IssueVisitor) = visitor.visit(this, issueType)
+
+    override fun toString() =
+        "${this.javaClass.simpleName} in state $state raised by ${raisedBy.name}${closedBy?.let { " closed by ${it.name}" } ?: ""}"
+
+    enum class State {
+        OPEN,
         RESOLVED,
-        DISMISSED
+        DISMISSED,
+        ;
+
+        internal fun nextState(newState: State) = newState.also { newState ->
+                check(newState != OPEN && this == OPEN) { "Cannot transition from $this to $newState" }
+            }
     }
 }
 
@@ -49,4 +49,4 @@ abstract class Issue<I: Issue<I>>(private val raisedBy: IssueParty) {
 data class IssueParty(val name: String)
 
 // Understands classifications of Issues
-interface IssueType<I: Issue<I>>
+interface IssueType<I : Issue<I>>
