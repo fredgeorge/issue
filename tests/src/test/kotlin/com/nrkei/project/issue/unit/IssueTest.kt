@@ -22,7 +22,7 @@ import kotlin.jvm.javaClass
 // Ensures Issue works correctly
 internal class IssueTest {
     companion object {
-        private val TestParty: IssueParty = IssueParty(javaClass.simpleName)
+        private val TestParty: IssueParty = IssueParty("IssueTest")
     }
 
     @Test
@@ -74,6 +74,7 @@ internal class IssueTest {
                 assertThrows<IllegalStateException> { issue1B.be(RESOLVED, raisedBy) }
                 assertThrows<IllegalStateException> { issue1C.be(DISMISSED, raisedBy) }
                 assertThrows<IllegalStateException> { issue1C.be(OPEN, raisedBy) }
+                println(issueSet)
             }
         }
     }
@@ -87,10 +88,12 @@ internal class IssueTest {
     private data class TestIssue1(val description: String) : Issue<TestIssue1>(TestParty) {
         companion object TestIssue1Type : IssueType<TestIssue1>
         override val issueType: IssueType<TestIssue1> = TestIssue1Type
+        override fun toString() = super.toString()
     }
 
     private data class TestIssue2(val description: String) : Issue<TestIssue2>(TestParty) {
         companion object TestIssue2Type : IssueType<TestIssue2>
         override val issueType: IssueType<TestIssue2> = TestIssue2Type
+        override fun toString() = super.toString()
     }
 }

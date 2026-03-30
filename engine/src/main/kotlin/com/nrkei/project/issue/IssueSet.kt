@@ -30,10 +30,12 @@ class IssueSet {
         issues(issueType, state)
 
     fun accept(visitor: IssueVisitor) {
-        visitor.preVisit(this)
+        visitor.preVisit(this, buckets.keys.toList())
         buckets.values.forEach { it.accept(visitor) }
-        visitor.postVisit(this)
+        visitor.postVisit(this, buckets.keys.toList())
     }
+
+    override fun toString() = PrettyPrint(this).toString()
 
     @Suppress("UNCHECKED_CAST")
     private fun <I : Issue<I>> bucket(issueType: IssueType<I>): Bucket<I> =
