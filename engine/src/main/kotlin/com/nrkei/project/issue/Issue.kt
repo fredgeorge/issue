@@ -44,3 +44,9 @@ abstract class Issue<I: Issue<I>>(private val raisedBy: IssueParty) {
         DISMISSED
     }
 }
+
+// Understands someont or something that can raise or resolve an issue
+data class IssueParty(val name: String)
+
+// Understands classifications of Issues
+interface IssueType<I: Issue<I>>

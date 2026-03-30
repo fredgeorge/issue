@@ -5,12 +5,12 @@
  */
 
 plugins {
-    kotlin("jvm") version "2.3.0" apply false
+    kotlin("jvm") version "2.3.20" apply false
 }
 
 allprojects {
     group = "com.nrkei.project"
-    version = "1.0.0"
+    version = "1.0.1"
 
     repositories {
         mavenLocal()

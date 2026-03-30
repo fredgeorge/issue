@@ -1,11 +1,10 @@
-### kotlin_template
+### issue
 
 Copyright (c) 2025-26 by Fred George  
 author: Fred George  fredgeorge@acm.org  
 Licensed under the MIT License; see LICENSE file in root.
 
-
-## Starting template for Kotlin project using Gradle
+## Starting this Kotlin project using Gradle
 
 Kotlin is relatively easy to set up with IntelliJ IDEA. 
 Gradle is used for building and testing the project, and is a 
@@ -16,11 +15,11 @@ Adapt as necessary for your environment.
 
 Note: This implementation was set up to use:
 
-- IntelliJ 2025.3.1.1 (Ultimate Edition)
-- Kotlin 2.3.0 (targeting Java 21 bytecode)
+- IntelliJ 2026.1 (Ultimate Edition)
+- Kotlin 2.3.20 (targeting Java 21 bytecode)
 - Java SDK 25 LTS (Oracle)
-- Gradle 9.2.1
-- JUnit Jupiter 6.0.1 for testing
+- Gradle 9.4.1
+- JUnit Jupiter 6.0.3 for testing
 
 Open the reference code:
 
