@@ -1,2 +1,2 @@
 rootProject.name = "issue"
-include("engine", "tests")
+include("engine", "tests", "persistence")
