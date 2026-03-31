@@ -13,8 +13,8 @@ import com.nrkei.project.issue.Issue.Companion.filterByState
 class IssueSet {
     private val buckets = mutableMapOf<IssueType<*>, Bucket<*>>()
 
-    fun <I : Issue<I>> raise(issue: I) {
-        bucket(issue.issueType).add(issue)
+    fun <I : Issue<I>> raise(issue: I) = issue.also {
+        bucket(it.issueType).add(it)
     }
 
     fun issues(state: Issue.State): List<Issue<*>> =
