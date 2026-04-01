@@ -10,10 +10,16 @@ import com.nrkei.project.issue.Issue.Companion.filter
 import com.nrkei.project.issue.Issue.Companion.filterByState
 
 // Understands aberrations in a process
-class IssueSet {
-    private val buckets = mutableMapOf<IssueType<*>, Bucket<*>>()
+class IssueSet private constructor(private val buckets: MutableMap<IssueType<*>, Bucket<*>>) {
 
-    fun <I : Issue<I>> raise(issue: I) = issue.also {
+    constructor() : this(mutableMapOf())
+
+    companion object {
+        fun restore(memento: String): IssueSet =
+            issueSetDtoFromBase64(memento).toIssueSet()
+    }
+
+    fun <I : Issue<I>> raise(issue: Issue<*>) = issue.also {
         bucket(it.issueType).add(it)
     }
 
@@ -35,6 +41,10 @@ class IssueSet {
         visitor.postVisit(this, buckets.keys.toList())
     }
 
+    fun memento(): String = toBase64(dto())
+
+    private fun dto() = IssueSetDto(this)
+
     override fun toString() = PrettyPrint(this).toString()
 
     @Suppress("UNCHECKED_CAST")
@@ -44,9 +54,10 @@ class IssueSet {
     class Bucket<I : Issue<I>> internal constructor(private val issueType: IssueType<I>) {
         private val issues = mutableSetOf<I>()
 
-        fun add(issue: I) {
+        fun add(issue: Issue<*>) {
             require(issue.issueType == issueType)
-            issues.add(issue)
+            @Suppress("UNCHECKED_CAST")
+            issues.add(issue as I)
         }
 
         fun all(): List<I> = issues.toList()
@@ -58,5 +69,18 @@ class IssueSet {
             issues.forEach { it.accept(visitor) }
             visitor.postVisit(this, issueType)
         }
+    }
+
+    internal data class IssueSetDto(val issueDtos: List<IssueDto<*>>) {
+        internal fun toIssueSet(): IssueSet = IssueSet().also { issueSet ->
+            issueDtos.map { it.toIssue() }.forEach { issue ->
+                issueSet.raise(issue)
+            }
+        }
+
+        internal constructor(issueSet: IssueSet) : this(
+            issueSet.buckets.values
+                .flatMap { it.allIssues() }
+                .map { it.dto() })
     }
 }

@@ -6,14 +6,31 @@
 
 package com.nrkei.project.issue
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.nrkei.project.issue.Issue.State.OPEN
+import java.util.*
 
 // Understands something aberrant in a process
-abstract class Issue<I : Issue<I>>(private val raisedBy: IssueParty) {
+abstract class Issue<I : Issue<I>>(
+    protected val raisedBy: IssueParty,
+    protected var state: State,
+    protected var closedBy: IssueParty? = null
+) {
+    constructor(raisedBy: IssueParty) : this(raisedBy, OPEN)
+
     abstract val issueType: IssueType<I>
 
-    private var closedBy: IssueParty? = null
-    private var state: State = OPEN
+
+    override fun equals(other: Any?) =
+        this === other || (other is Issue<*> && this.equals(other))
+
+    private fun equals(other: Issue<*>): Boolean {
+        return this.raisedBy == other.raisedBy &&
+                this.state == other.state
+                && this.closedBy == other.closedBy
+    }
+
+    override fun hashCode() = Objects.hash(raisedBy, state, closedBy)
 
     companion object {
         internal fun <I : Issue<I>> Iterable<I>.filter(state: State) =
@@ -27,6 +44,8 @@ abstract class Issue<I : Issue<I>>(private val raisedBy: IssueParty) {
         state = state.nextState(newState)
         this.closedBy = closedBy
     }
+
+    abstract fun <I: Issue<I>> dto(): IssueDto<I>
 
     fun accept(visitor: IssueVisitor) = visitor.visit(this, issueType)
 
@@ -50,3 +69,16 @@ data class IssueParty(val name: String)
 
 // Understands classifications of Issues
 interface IssueType<I : Issue<I>>
+
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type",
+)
+// Understands a raw representation of an Issue
+interface IssueDto<I>{
+    val raisedBy: String
+    val state: Issue.State
+    val closedBy: String?
+    fun <I : Issue<I>> toIssue(): Issue<*>
+}

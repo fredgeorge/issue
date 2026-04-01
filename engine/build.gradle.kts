@@ -12,7 +12,9 @@ plugins {
 }
 
 dependencies {
-
+    implementation(platform(libs.jackson.bom))
+    implementation(libs.jackson.databind)
+    implementation(libs.jackson.kotlin)
 }
 
 java {
