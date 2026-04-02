@@ -6,36 +6,39 @@
 
 package com.nrkei.project.issue
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import com.nrkei.project.issue.IssueSet.IssueSetDto
-import java.util.Base64
-import kotlin.jvm.java
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
+import java.util.*
 
-val mapper = jacksonObjectMapper()
 
-internal inline fun <reified T : Any> toBase64(dto: T) =
+val baseIssueSerializers = SerializersModule {
+    polymorphic(IssueDto::class) {
+        // register only Core DTO's here
+    }
+}
+internal val baseJson = Json {
+    serializersModule = baseIssueSerializers
+    prettyPrint = false
+    ignoreUnknownKeys = true
+    classDiscriminator = "type"
+}
+
+internal inline fun <reified T : Any> toBase64(dto: T, json: Json = baseJson) =
     Base64.getEncoder().encodeToString(
-            toJson(dto).toByteArray(Charsets.UTF_8)
-        )
+            toJson(dto, json).toByteArray(Charsets.UTF_8)
+        ) //.also { println(it) }
 
-internal inline fun <reified T : Any> toJson(dto: T) =
-    mapper.writeTypedValueAsString(dto)
+internal inline fun <reified T : Any> toJson(dto: T, json: Json) =
+    json.encodeToString(dto) //.also { println(it) }
 
+internal fun issueSetDtoFromBase64(base64: String, json: Json = baseJson): IssueSetDto =
+    fromJson(fromBase64ToJson(base64), json)
 
-inline fun <reified T> ObjectMapper.writeTypedValueAsString(value: T): String =
-    writerFor(jacksonTypeRef<T>()).writeValueAsString(value)
-
-internal fun issueSetDtoFromBase64(
-    base64: String
-) = fromJson(fromBase64ToJson(base64), IssueSetDto::class.java)
+internal inline fun <reified T> fromJson(jsonText: String, json: Json): T =
+    json.decodeFromString(jsonText)
 
 internal fun fromBase64ToJson(base64: String)=
     String(Base64.getDecoder().decode(base64), Charsets.UTF_8)
 
-internal fun <T> fromJson(
-    json: String,
-    clazz: Class<T>
-): T =
-    mapper.readValue(json, clazz)

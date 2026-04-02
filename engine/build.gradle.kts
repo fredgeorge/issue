@@ -4,8 +4,6 @@
  * Licensed under the MIT License; see LICENSE file in root.
  */
 
-import org.gradle.jvm.toolchain.JavaLanguageVersion
-
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.serialization)
@@ -13,9 +11,7 @@ plugins {
 }
 
 dependencies {
-    implementation(platform(libs.jackson.bom))
-    implementation(libs.jackson.databind)
-    implementation(libs.jackson.kotlin)
+    implementation(libs.kotlinx.serialization.json)
 }
 
 java {

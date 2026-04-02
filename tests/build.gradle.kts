@@ -12,10 +12,7 @@ plugins {
 dependencies {
     implementation(project(":engine"))
 
-    testImplementation(platform(libs.jackson.bom))
-    testImplementation(libs.jackson.databind)
-    testImplementation(libs.jackson.kotlin)
-
+    testImplementation(libs.kotlinx.serialization.json)
     testImplementation(platform(libs.junit.bom))
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")

@@ -8,6 +8,8 @@ package com.nrkei.project.issue
 
 import com.nrkei.project.issue.Issue.Companion.filter
 import com.nrkei.project.issue.Issue.Companion.filterByState
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 
 // Understands aberrations in a process
 class IssueSet private constructor(private val buckets: MutableMap<IssueType<*>, Bucket<*>>) {
@@ -15,8 +17,8 @@ class IssueSet private constructor(private val buckets: MutableMap<IssueType<*>,
     constructor() : this(mutableMapOf())
 
     companion object {
-        fun restore(memento: String): IssueSet =
-            issueSetDtoFromBase64(memento).toIssueSet()
+        fun restore(memento: String, json: Json = baseJson): IssueSet =
+            issueSetDtoFromBase64(memento, json).toIssueSet()
     }
 
     fun <I : Issue<I>> raise(issue: Issue<*>) = issue.also {
@@ -41,7 +43,7 @@ class IssueSet private constructor(private val buckets: MutableMap<IssueType<*>,
         visitor.postVisit(this, buckets.keys.toList())
     }
 
-    fun memento(): String = toBase64(dto())
+    fun memento(json: Json = baseJson): String = toBase64(dto(), json)
 
     private fun dto() = IssueSetDto(this)
 
@@ -71,6 +73,7 @@ class IssueSet private constructor(private val buckets: MutableMap<IssueType<*>,
         }
     }
 
+    @Serializable
     internal data class IssueSetDto(val issueDtos: List<IssueDto<*>>) {
         internal fun toIssueSet(): IssueSet = IssueSet().also { issueSet ->
             issueDtos.map { it.toIssue() }.forEach { issue ->

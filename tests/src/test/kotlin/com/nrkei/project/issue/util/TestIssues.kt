@@ -11,7 +11,8 @@ import com.nrkei.project.issue.Issue.State.OPEN
 import com.nrkei.project.issue.IssueDto
 import com.nrkei.project.issue.IssueParty
 import com.nrkei.project.issue.IssueType
-import java.util.Objects
+import kotlinx.serialization.Serializable
+import java.util.*
 
 internal class TestIssue1(
     val description: String,
@@ -30,8 +31,8 @@ internal class TestIssue1(
 
     override fun hashCode() = Objects.hash(super.hashCode(), description)
 
+    @Suppress("UNCHECKED_CAST")
     override fun <I : Issue<I>> dto() =
-        @Suppress("UNCHECKED_CAST")
         TestIssue1Dto(
             raisedBy.name,
             state,
@@ -39,6 +40,7 @@ internal class TestIssue1(
             description
         ) as IssueDto<I>
 
+    @Serializable
     internal data class TestIssue1Dto(
         override val raisedBy: String,
         override val state: State,
@@ -80,6 +82,7 @@ internal class TestIssue2(
         label
     ) as IssueDto<I>
 
+    @Serializable
     internal data class TestIssue2Dto(
         override val raisedBy: String,
         override val state: State,

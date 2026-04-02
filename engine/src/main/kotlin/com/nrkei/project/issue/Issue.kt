@@ -6,8 +6,7 @@
 
 package com.nrkei.project.issue
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo
-import com.nrkei.project.issue.Issue.State.OPEN
+import kotlinx.serialization.Polymorphic
 import java.util.*
 
 // Understands something aberrant in a process
@@ -16,10 +15,7 @@ abstract class Issue<I : Issue<I>>(
     protected var state: State,
     protected var closedBy: IssueParty? = null
 ) {
-    constructor(raisedBy: IssueParty) : this(raisedBy, OPEN)
-
     abstract val issueType: IssueType<I>
-
 
     override fun equals(other: Any?) =
         this === other || (other is Issue<*> && this.equals(other))
@@ -70,12 +66,8 @@ data class IssueParty(val name: String)
 // Understands classifications of Issues
 interface IssueType<I : Issue<I>>
 
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-)
 // Understands a raw representation of an Issue
+@Polymorphic
 interface IssueDto<I>{
     val raisedBy: String
     val state: Issue.State

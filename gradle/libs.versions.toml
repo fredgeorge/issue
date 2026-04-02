@@ -1,6 +1,9 @@
+# Copyright (c) 2025-26 by Fred George
+# @author Fred George  fredgeorge@acm.org
+# Licensed under the MIT License; see LICENSE file in root.
+
 [versions]
 junit = "6.0.3"
-jackson = "2.19.0"
 kotlin = "2.3.20"
 serialization = "1.8.1"
 
@@ -11,10 +14,7 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 [libraries]
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
-junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit" }
+#junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit" }
 
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 
-jackson-bom = { module = "com.fasterxml.jackson:jackson-bom", version.ref = "jackson" }
-jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind" }
-jackson-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin" }
