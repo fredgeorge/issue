@@ -10,7 +10,7 @@ import com.nrkei.project.issue.Issue.State.OPEN
 import kotlinx.serialization.Serializable
 import java.util.*
 
-class TestIssue1  constructor(
+class TestIssue1 private constructor(
     val description: String,
     raisedBy: IssueParty,
     state: State,
@@ -48,7 +48,7 @@ class TestIssue1  constructor(
     ) : IssueDto<TestIssue1>
 }
 
-class TestIssue2 constructor(
+class TestIssue2 private constructor(
     val label: String,
     raisedBy: IssueParty,
     state: State,

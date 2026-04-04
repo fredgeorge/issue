@@ -14,6 +14,7 @@ dependencies {
     implementation(project(":engine"))
     implementation(libs.kotlinx.serialization.json)
     implementation(project(":tests"))
+    implementation(libs.kotlin.reflect)
 
     testImplementation(platform(libs.junit.bom))
     testImplementation(libs.junit.jupiter)
