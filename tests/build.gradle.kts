@@ -7,22 +7,20 @@
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.serialization)
+    `java-test-fixtures`
 }
 
 dependencies {
     implementation(project(":engine"))
+    implementation(libs.kotlinx.serialization.json)
 
-    testImplementation(libs.kotlinx.serialization.json)
+    testFixturesImplementation(project(":engine"))
+    testFixturesImplementation(libs.kotlinx.serialization.json)
+
     testImplementation(platform(libs.junit.bom))
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-}
-
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(25))
-    }
 }
 
 tasks.test {

@@ -11,14 +11,25 @@ plugins {
 }
 
 dependencies {
+    implementation(project(":engine"))
     implementation(libs.kotlinx.serialization.json)
+
+    testImplementation(testFixtures(project(":tests")))
+    testImplementation(platform(libs.junit.bom))
+    testImplementation(libs.junit.jupiter)
+    testRuntimeOnly(libs.junit.platform.launcher)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
-            artifactId = "issue-engine"
+            artifactId = "template-engine"
         }
     }
     repositories {

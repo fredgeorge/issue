@@ -6,11 +6,12 @@
 
 package com.nrkei.project.issue.unit
 
+import com.nrkei.project.issue.Encoding.defaultIssueSerializers
 import com.nrkei.project.issue.IssueDto
 import com.nrkei.project.issue.IssueSet
-import com.nrkei.project.issue.baseIssueSerializers
+import com.nrkei.project.issue.fromMemento
+import com.nrkei.project.issue.toMemento
 import com.nrkei.project.issue.util.TestIssue1
-import com.nrkei.project.issue.util.TestIssue1.TestIssue1Type
 import com.nrkei.project.issue.util.TestIssue2
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
@@ -30,19 +31,22 @@ internal class MementoTest {
         }
     }
     private val json = Json {
-        serializersModule = baseIssueSerializers + issueSerializers
+        serializersModule = defaultIssueSerializers + issueSerializers
         prettyPrint = false
         ignoreUnknownKeys = true
-        classDiscriminator = "type" }
+        classDiscriminator = "type"
+    }
 
     @Test
     fun `save and restore one Issue`(){
         IssueSet().also { originalSet ->
             originalSet.raise(TestIssue1("A"))
-            originalSet.memento(json).also { memento ->
-                IssueSet.restore(memento, json).also { restoredSet ->
-                    Assertions.assertEquals(1, restoredSet.issues(TestIssue1Type).size)
-                    Assertions.assertEquals(originalSet.issues(TestIssue1Type), restoredSet.issues(TestIssue1Type))
+            originalSet.toMemento(json).also { memento ->
+                IssueSet.fromMemento(memento, json).also { restoredSet ->
+                    Assertions.assertEquals(1, restoredSet.issues(TestIssue1.Companion.TestIssue1Type).size)
+                    Assertions.assertEquals(originalSet.issues(TestIssue1.Companion.TestIssue1Type), restoredSet.issues(
+                        TestIssue1.Companion.TestIssue1Type
+                    ))
                 }
             }
         }

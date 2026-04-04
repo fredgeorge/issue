@@ -11,7 +11,7 @@ import com.nrkei.project.issue.Issue.State.*
 import com.nrkei.project.issue.IssueParty
 import com.nrkei.project.issue.IssueSet
 import com.nrkei.project.issue.util.TestIssue1
-import com.nrkei.project.issue.util.TestIssue1.TestIssue1Type
+import com.nrkei.project.issue.util.TestIssue1.Companion.TestIssue1Type
 import com.nrkei.project.issue.util.TestIssue2
 import com.nrkei.project.issue.util.assertStates
 import org.junit.jupiter.api.Assertions.assertEquals

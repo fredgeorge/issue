@@ -17,6 +17,14 @@ abstract class Issue<I : Issue<I>>(
 ) {
     abstract val issueType: IssueType<I>
 
+    companion object {
+        internal fun <I : Issue<I>> Iterable<I>.filter(state: State) =
+            this.filter { it.state == state }
+
+        internal fun Iterable<Issue<*>>.filterByState(state: State) =
+            this.filter { it.state == state }
+    }
+
     override fun equals(other: Any?) =
         this === other || (other is Issue<*> && this.equals(other))
 
@@ -28,20 +36,12 @@ abstract class Issue<I : Issue<I>>(
 
     override fun hashCode() = Objects.hash(raisedBy, state, closedBy)
 
-    companion object {
-        internal fun <I : Issue<I>> Iterable<I>.filter(state: State) =
-            this.filter { it.state == state }
-
-        internal fun Iterable<Issue<*>>.filterByState(state: State) =
-            this.filter { it.state == state }
-    }
-
     fun be(newState: State, closedBy: IssueParty) {
         state = state.nextState(newState)
         this.closedBy = closedBy
     }
 
-    abstract fun <I: Issue<I>> dto(): IssueDto<I>
+    abstract fun <I: Issue<I>> toDto(): IssueDto<I>
 
     fun accept(visitor: IssueVisitor) = visitor.visit(this, issueType)
 

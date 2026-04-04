@@ -14,13 +14,16 @@ import com.nrkei.project.issue.IssueType
 import kotlinx.serialization.Serializable
 import java.util.*
 
-internal class TestIssue1(
+class TestIssue1  constructor(
     val description: String,
     raisedBy: IssueParty,
     state: State,
     closedBy: IssueParty?
 ) : Issue<TestIssue1>(raisedBy, state, closedBy) {
-    companion object TestIssue1Type : IssueType<TestIssue1>
+
+    companion object {
+        object TestIssue1Type : IssueType<TestIssue1>
+    }
 
     constructor(description: String) : this(description, TestParty, OPEN, null)
 
@@ -32,7 +35,7 @@ internal class TestIssue1(
     override fun hashCode() = Objects.hash(super.hashCode(), description)
 
     @Suppress("UNCHECKED_CAST")
-    override fun <I : Issue<I>> dto() =
+    override fun <I : Issue<I>> toDto() =
         TestIssue1Dto(
             raisedBy.name,
             state,
@@ -41,7 +44,7 @@ internal class TestIssue1(
         ) as IssueDto<I>
 
     @Serializable
-    internal data class TestIssue1Dto(
+    data class TestIssue1Dto(
         override val raisedBy: String,
         override val state: State,
         override val closedBy: String?,
@@ -57,13 +60,15 @@ internal class TestIssue1(
     }
 }
 
-internal class TestIssue2(
+class TestIssue2 constructor(
     val label: String,
     raisedBy: IssueParty,
     state: State,
     closedBy: IssueParty?
 ) : Issue<TestIssue2>(raisedBy, state, closedBy) {
-    companion object TestIssue2Type : IssueType<TestIssue2>
+    companion object {
+        object TestIssue2Type : IssueType<TestIssue2>
+    }
 
     constructor(label: String) : this(label, TestParty, OPEN, null)
 
@@ -75,7 +80,7 @@ internal class TestIssue2(
     override fun hashCode() = Objects.hash(super.hashCode(), label)
 
     @Suppress("UNCHECKED_CAST")
-    override fun <I : Issue<I>> dto() = TestIssue2Dto(
+    override fun <I : Issue<I>> toDto() = TestIssue2Dto(
         raisedBy.name,
         state,
         closedBy?.name,
@@ -83,7 +88,7 @@ internal class TestIssue2(
     ) as IssueDto<I>
 
     @Serializable
-    internal data class TestIssue2Dto(
+    data class TestIssue2Dto(
         override val raisedBy: String,
         override val state: State,
         override val closedBy: String?,

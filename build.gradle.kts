@@ -13,10 +13,22 @@ plugins {
 
 allprojects {
     group = "com.nrkei.project"
-    version = "1.0.3"
+    version = "1.1.0"
 
     repositories {
         mavenLocal()
         mavenCentral()
+    }
+}
+
+val javaVersion = providers.gradleProperty("javaVersion").map(String::toInt).get()
+
+subprojects {
+    plugins.withId("java") {
+        extensions.configure<JavaPluginExtension> {
+            toolchain {
+                languageVersion.set(JavaLanguageVersion.of(javaVersion))
+            }
+        }
     }
 }

@@ -48,3 +48,44 @@ Update the following:
 - In settings.gradle.kts, change the rootProject.name
 - In both engine and tests, choose your domain name for your code under kotlin directory
 - Consider renaming the <engine> project to your domain specific label
+
+## Persistence
+
+Peristence is separated from the domain model (engine).
+If imbedded in the model, complexity can compromise the
+clarity of the model design. To the maximum extent
+possible, peristence should be separated from the model.
+
+Persistence is handled by the Kotlin-serialization library. It
+provides a convenient way to serialize and deserialize
+Kotlin data classes to and from JSON and Base64 formats.
+This ensures that data can be easily stored and transmitted
+while maintaining its structure and integrity.
+
+The _Memento Pattern_ (Design Patterns book) is used as the
+model for persistence. The pattern suggests an object can
+present a binary representation of itself that can only
+be reinterpreted by the object's class itself. It can't be
+used as an _encapsulation_ bypass.
+
+The example injects _memento_ creation with an extension method
+into the Rectangle class. It further injects restoration of the
+class into the Companion object of Rectangle.
+
+The base Rectangle class, to support the Memento Pattern,
+defines a properly populated DTO in response to toDto(), and
+must have a Companion object as a target for the restoration
+injection. If JSON serialization is to be supported in creating
+the memento, _@Serializable_ must be tagged on the DTO.
+
+The creation of the _memento_ is done in the
+RectanglePersistence helper functions in the
+persistence package, including the injection of the creation and
+restoration functions. This helper class is solely
+responsible for the format and content of the _memento_.
+
+The Encoding object allows for gneration and
+restoration in either JSON or Base64 formats. Base64
+properly _hides_ the content of the memento from prying
+eyes. _Polymorphism_ support exists with SerializersModule
+parameter on JSON creation.
