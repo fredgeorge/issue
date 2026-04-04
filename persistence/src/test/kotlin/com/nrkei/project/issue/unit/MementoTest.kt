@@ -8,12 +8,13 @@ package com.nrkei.project.issue.unit
 
 import com.nrkei.project.issue.*
 import com.nrkei.project.issue.Encoding.defaultIssueSerializers
+import com.nrkei.project.issue.TestIssue1.TestIssue1Type
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.plus
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 // Ensures IssueSet can be serialized and deserialized
@@ -35,10 +36,8 @@ internal class MementoTest {
             originalSet.raise(TestIssue1("A"))
             originalSet.toMemento(json).also { memento ->
                 IssueSet.fromMemento(memento, json).also { restoredSet ->
-                    Assertions.assertEquals(1, restoredSet.issues(TestIssue1.Companion.TestIssue1Type).size)
-                    Assertions.assertEquals(originalSet.issues(TestIssue1.Companion.TestIssue1Type), restoredSet.issues(
-                        TestIssue1.Companion.TestIssue1Type
-                    ))
+                    assertEquals(1, restoredSet.issues(TestIssue1Type).size)
+                    assertEquals(originalSet.issues(TestIssue1Type), restoredSet.issues(TestIssue1Type))
                 }
             }
         }

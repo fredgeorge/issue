@@ -8,7 +8,7 @@ package com.nrkei.project.issue.unit
 
 import com.nrkei.project.issue.*
 import com.nrkei.project.issue.Issue.State.*
-import com.nrkei.project.issue.TestIssue1.Companion.TestIssue1Type
+import com.nrkei.project.issue.TestIssue1.TestIssue1Type
 import com.nrkei.project.issue.util.assertStates
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

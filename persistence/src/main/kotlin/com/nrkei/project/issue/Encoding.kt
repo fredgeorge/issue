@@ -31,10 +31,10 @@ internal object Encoding {
     internal inline fun <reified T : Any> toBase64(dto: T, json: Json = defaultJson) =
         Base64.getEncoder().encodeToString(
             toJson(dto, json).toByteArray(Charsets.UTF_8)
-        )//.also { println(it) }
+        )
 
     internal inline fun <reified T : Any> toJson(dto: T, json: Json = defaultJson) =
-        json.encodeToString(dto)//.also { println(it) }
+        json.encodeToString(dto)
 
     internal inline fun <reified T> fromBase64(base64: String, json: Json = defaultJson): T =
         fromJson(fromBase64ToJson(base64), json)

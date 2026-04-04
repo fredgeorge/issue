@@ -17,9 +17,7 @@ class TestIssue1 private constructor(
     closedBy: IssueParty?
 ) : Issue<TestIssue1>(raisedBy, state, closedBy) {
 
-    companion object {
-        object TestIssue1Type : IssueType<TestIssue1>
-    }
+    companion object TestIssue1Type : IssueType<TestIssue1>
 
     constructor(description: String) : this(description, TestParty, OPEN, null)
 
@@ -55,9 +53,7 @@ class TestIssue2 private constructor(
     state: State,
     closedBy: IssueParty?
 ) : Issue<TestIssue2>(raisedBy, state, closedBy) {
-    companion object {
-        object TestIssue2Type : IssueType<TestIssue2>
-    }
+    companion object TestIssue2Type : IssueType<TestIssue2>
 
     constructor(label: String) : this(label, TestParty, OPEN, null)
 
