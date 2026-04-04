@@ -30,10 +30,13 @@ abstract class Issue<I : Issue<I>>(
 
     private fun equals(other: Issue<*>): Boolean {
         return this.raisedBy == other.raisedBy &&
-                this.issueType == other.issueType
+                this.issueType == other.issueType &&
+                this.state == other.state &&
+                this.closedBy == other.closedBy
     }
 
-    override fun hashCode() = Objects.hash(raisedBy, state, closedBy)
+    // Base hashCode on only immutable properties
+    override fun hashCode() = Objects.hash(raisedBy, issueType)
 
     fun be(newState: State, closedBy: IssueParty) {
         state = state.nextState(newState)
@@ -53,13 +56,14 @@ abstract class Issue<I : Issue<I>>(
         DISMISSED,
         ;
 
-        internal fun nextState(newState: State) = newState.also { newState ->
-                check(newState != OPEN && this == OPEN) { "Cannot transition from $this to $newState" }
+        internal fun nextState(newState: State) = newState.also {
+                check(this == OPEN) { "Cannot transition from $this" }
+                check(newState != OPEN) { "Cannot re-open an Issue" }
             }
     }
 }
 
-// Understands someont or something that can raise or resolve an issue
+// Understands someone or something that can raise or resolve an issue
 data class IssueParty(val name: String)
 
 // Understands classifications of Issues

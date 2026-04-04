@@ -14,7 +14,7 @@ import com.nrkei.project.issue.TestIssue2.TestIssue2Dto
 import com.nrkei.project.issue.TestIssuePersistence.toIssue
 import kotlinx.serialization.json.Json
 
-// Understands persistence of a Rectangle by converting
+// Understands persistence of a IssueSet by converting
 // it to a DTO, serializing that DTO as JSON, and
 // optionally wrapping the JSON in Base64 for
 // text-safe storage or transmission.

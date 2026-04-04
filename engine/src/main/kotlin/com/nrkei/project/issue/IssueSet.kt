@@ -35,9 +35,11 @@ class IssueSet private constructor(private val buckets: MutableMap<IssueType<*>,
         issues(issueType, state)
 
     fun accept(visitor: IssueVisitor) {
-        visitor.preVisit(this, buckets.keys.toList())
-        buckets.values.forEach { it.accept(visitor) }
-        visitor.postVisit(this, buckets.keys.toList())
+        buckets.keys.toList().also { issueTypes ->
+            visitor.preVisit(this, issueTypes)
+            buckets.values.forEach { it.accept(visitor) }
+            visitor.postVisit(this, issueTypes)
+        }
     }
 
     fun toDto() = IssueSetDto(this)
