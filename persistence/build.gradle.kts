@@ -14,7 +14,7 @@ plugins {
 dependencies {
     implementation(project(":engine"))
     implementation(libs.kotlinx.serialization.json)
-    implementation(project(":tests"))
+    implementation(project(":test-support"))
     implementation(libs.kotlin.reflect)
 
     testImplementation(platform(libs.junit.bom))
@@ -31,7 +31,7 @@ publishing {
     publications {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
-            artifactId = "template-engine"
+            artifactId = "issue-persistence"
         }
     }
     repositories {

@@ -13,6 +13,7 @@ import kotlin.reflect.jvm.isAccessible
 // Understands creation of test issues from DTOs
 object TestIssuePersistence {
 
+    // Build using reflection in case constructor is private
     internal fun TestIssue1Dto.toIssue(): TestIssue1 {
         val ctor = TestIssue1::class.constructors.first { it.parameters.size == 4 }
         ctor.isAccessible = true
@@ -24,6 +25,7 @@ object TestIssuePersistence {
         )
     }
 
+    // Build using reflection in case constructor is private
     internal fun TestIssue2Dto.toIssue(): TestIssue2 {
         val ctor = TestIssue2::class.constructors.first { it.parameters.size == 4 }
         ctor.isAccessible = true

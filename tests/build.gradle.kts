@@ -11,6 +11,7 @@ plugins {
 
 dependencies {
     implementation(project(":engine"))
+    implementation(project(":test-support"))
     implementation(libs.kotlinx.serialization.json)
 
     testImplementation(platform(libs.junit.bom))

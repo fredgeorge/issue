@@ -11,4 +11,4 @@ pluginManagement {
 }
 
 rootProject.name = "issue"
-include("engine", "tests", "persistence")
+include("engine", "test-support", "tests", "persistence")

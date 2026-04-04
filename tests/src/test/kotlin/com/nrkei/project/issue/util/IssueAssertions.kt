@@ -10,7 +10,6 @@ import com.nrkei.project.issue.Issue
 import com.nrkei.project.issue.IssueSet
 import org.junit.jupiter.api.Assertions.assertEquals
 
-
 fun assertStates(issueSet: IssueSet, vararg stateCounts: Pair<Issue.State, Int>) {
     stateCounts.forEach { (state, count) ->
         assertEquals(count, issueSet.issues(state).size)
