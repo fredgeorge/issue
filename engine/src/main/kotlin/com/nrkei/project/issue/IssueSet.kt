@@ -18,7 +18,7 @@ class IssueSet private constructor(private val buckets: MutableMap<IssueType<*>,
     // Required for serialization
     companion object
 
-    fun <I : Issue<I>> raise(issue: Issue<*>) = issue.also {
+    fun raise(issue: Issue<*>) = issue.also {
         bucket(it.issueType).add(it)
     }
 

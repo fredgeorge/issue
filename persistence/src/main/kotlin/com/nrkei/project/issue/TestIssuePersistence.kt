@@ -21,7 +21,7 @@ object TestIssuePersistence {
             this.description,
             IssueParty(this.raisedBy),
             this.state,
-            this.closedBy?.also { IssueParty(it) }
+            this.closedBy?.let { IssueParty(it) }
         )
     }
 
@@ -33,7 +33,7 @@ object TestIssuePersistence {
             this.label,
             IssueParty(this.raisedBy),
             this.state,
-            this.closedBy?.also { IssueParty(it) }
+            this.closedBy?.let { IssueParty(it) }
         )
     }
 }

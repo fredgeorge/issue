@@ -30,8 +30,7 @@ abstract class Issue<I : Issue<I>>(
 
     private fun equals(other: Issue<*>): Boolean {
         return this.raisedBy == other.raisedBy &&
-                this.state == other.state
-                && this.closedBy == other.closedBy
+                this.issueType == other.issueType
     }
 
     override fun hashCode() = Objects.hash(raisedBy, state, closedBy)

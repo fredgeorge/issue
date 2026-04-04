@@ -25,11 +25,8 @@ internal class MementoTest {
             subclass(TestIssue2.TestIssue2Dto::class)
         }
     }
-    private val json = Json {
+    private val json = Json(Encoding.defaultJson) {
         serializersModule = defaultIssueSerializers + issueSerializers
-        prettyPrint = false
-        ignoreUnknownKeys = true
-        classDiscriminator = "type"
     }
 
     @Test
