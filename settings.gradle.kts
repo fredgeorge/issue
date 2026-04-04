@@ -11,11 +11,5 @@ dependencyResolutionManagement {
     }
 }
 
-pluginManagement {
-    plugins {
-        id("org.jetbrains.kotlin.jvm") version providers.gradleProperty("kotlinPluginVersion").get()
-    }
-}
-
 rootProject.name = "issue"
 include("engine", "test-support", "tests", "persistence")
