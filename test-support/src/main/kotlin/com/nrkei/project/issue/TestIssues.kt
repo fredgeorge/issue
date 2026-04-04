@@ -82,4 +82,4 @@ class TestIssue2 private constructor(
     ) : IssueDto<TestIssue2>
 }
 
-private val TestParty: IssueParty = IssueParty("IssueTest")
+val TestParty: IssueParty = IssueParty("IssueTest")
