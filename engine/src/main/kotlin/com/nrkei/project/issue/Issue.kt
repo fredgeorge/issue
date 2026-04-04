@@ -72,5 +72,4 @@ interface IssueDto<I>{
     val raisedBy: String
     val state: Issue.State
     val closedBy: String?
-    fun <I : Issue<I>> toIssue(): Issue<*>
 }

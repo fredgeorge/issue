@@ -13,8 +13,8 @@ plugins {
 dependencies {
     implementation(project(":engine"))
     implementation(libs.kotlinx.serialization.json)
+    implementation(project(":tests"))
 
-    testImplementation(testFixtures(project(":tests")))
     testImplementation(platform(libs.junit.bom))
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly(libs.junit.platform.launcher)

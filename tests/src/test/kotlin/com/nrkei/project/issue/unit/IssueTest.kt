@@ -6,13 +6,9 @@
 
 package com.nrkei.project.issue.unit
 
-import com.nrkei.project.issue.Issue
+import com.nrkei.project.issue.*
 import com.nrkei.project.issue.Issue.State.*
-import com.nrkei.project.issue.IssueParty
-import com.nrkei.project.issue.IssueSet
-import com.nrkei.project.issue.util.TestIssue1
-import com.nrkei.project.issue.util.TestIssue1.Companion.TestIssue1Type
-import com.nrkei.project.issue.util.TestIssue2
+import com.nrkei.project.issue.TestIssue1.Companion.TestIssue1Type
 import com.nrkei.project.issue.util.assertStates
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -46,15 +42,15 @@ internal class IssueTest {
     fun `can create and close Issues - cannot close an Issue more than once`() {
         issueSet.apply {
             IssueParty(javaClass.simpleName).also { raisedBy ->
-                val issue1A1 = raise(TestIssue1("A"))
-                val issue1A2 = raise(TestIssue1("A"))
+                raise(TestIssue1("A"))
+                raise(TestIssue1("A"))
                 val issue1B = raise(TestIssue1("B"))
                 val issue1C = raise(TestIssue1("C"))
-                val issue2A = raise(TestIssue2("A"))
-                val issue2B1 = raise(TestIssue2("B"))
-                val issue2B2 = raise(TestIssue2("B"))
-                val issue2C1 = raise(TestIssue2("C"))
-                val issue2C2 = raise(TestIssue2("C"))
+                raise(TestIssue2("A"))
+                raise(TestIssue2("B"))
+                raise(TestIssue2("B"))
+                raise(TestIssue2("C"))
+                raise(TestIssue2("C"))
                 assertStates(OPEN to 6, RESOLVED to 0, DISMISSED to 0)
                 issue1B.be(DISMISSED, raisedBy)
                 issue1C.be(RESOLVED, raisedBy)
