@@ -4,6 +4,13 @@
  * Licensed under the MIT License; see LICENSE file in root.
  */
 
+dependencyResolutionManagement {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+}
+
 pluginManagement {
     plugins {
         id("org.jetbrains.kotlin.jvm") version providers.gradleProperty("kotlinPluginVersion").get()

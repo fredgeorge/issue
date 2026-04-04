@@ -14,11 +14,6 @@ plugins {
 allprojects {
     group = "com.nrkei.project"
     version = "1.1.1"
-
-    repositories {
-        mavenLocal()
-        mavenCentral()
-    }
 }
 
 val javaVersion = providers.gradleProperty("javaVersion").map(String::toInt).get()
