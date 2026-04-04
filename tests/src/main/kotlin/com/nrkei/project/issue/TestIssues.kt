@@ -23,8 +23,9 @@ class TestIssue1 private constructor(
 
     constructor(description: String) : this(description, TestParty, OPEN, null)
 
-    override val issueType: IssueType<TestIssue1> = TestIssue1Type
+    override val issueType = TestIssue1Type
 
+    // Necessary for sets to work
     override fun equals(other: Any?) =
         super.equals(other) && other is TestIssue1 && this.description == other.description
 
@@ -60,8 +61,9 @@ class TestIssue2 private constructor(
 
     constructor(label: String) : this(label, TestParty, OPEN, null)
 
-    override val issueType: IssueType<TestIssue2> = TestIssue2Type
+    override val issueType = TestIssue2Type
 
+    // Necessary for sets to work
     override fun equals(other: Any?) =
         super.equals(other) && other is TestIssue2 && this.label == other.label
 
