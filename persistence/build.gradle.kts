@@ -7,8 +7,6 @@
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.serialization)
-    `maven-publish`
-    `java-library`
 }
 
 dependencies {
@@ -25,16 +23,4 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
-}
-
-publishing {
-    publications {
-        create<MavenPublication>("mavenJava") {
-            from(components["java"])
-            artifactId = "issue-persistence"
-        }
-    }
-    repositories {
-        mavenLocal()
-    }
 }

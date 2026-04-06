@@ -6,7 +6,7 @@
 
 allprojects {
     group = "com.nrkei.project"
-    version = "1.1.1"
+    version = "1.1.8"
 }
 
 val javaVersion = providers.gradleProperty("javaVersion").map(String::toInt).get()
