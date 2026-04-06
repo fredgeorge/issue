@@ -63,6 +63,16 @@ internal class IssueTest {
         }
     }
 
+    @Test
+    fun `resolved Issue not replaced by new Issue`() {
+        issueSet.apply {
+            val originalIssue = raise(TestIssue1("A"))
+            originalIssue.be(RESOLVED, TestParty)
+            raise(TestIssue1("A"))
+            assertStates(OPEN to 1, RESOLVED to 1, DISMISSED to 0)
+        }
+    }
+
     private fun assertStates(vararg stateCounts: Pair<Issue.State, Int>) {
         assertStates(issueSet, *(stateCounts))
     }
