@@ -10,6 +10,10 @@ plugins {
     `maven-publish`
 }
 
+java {
+    withSourcesJar()
+}
+
 dependencies {
     implementation(libs.kotlinx.serialization.json)
 }
@@ -18,7 +22,7 @@ publishing {
     publications {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
-            artifactId = "issue-engine"
+            artifactId = "engine"
         }
     }
     repositories {

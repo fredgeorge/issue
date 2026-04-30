@@ -5,8 +5,8 @@
  */
 
 allprojects {
-    group = "com.nrkei.project"
-    version = "1.1.8"
+    group = "com.nrkei.project.issue"
+    version = "1.1.12"
 }
 
 val javaVersion = providers.gradleProperty("javaVersion").map(String::toInt).get()

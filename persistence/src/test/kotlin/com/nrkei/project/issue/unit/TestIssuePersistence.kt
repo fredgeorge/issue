@@ -4,8 +4,9 @@
  * Licensed under the MIT License; see LICENSE file in root.
  */
 
-package com.nrkei.project.issue
+package com.nrkei.project.issue.unit
 
+import com.nrkei.project.issue.*
 import com.nrkei.project.issue.TestIssue1.TestIssue1Dto
 import com.nrkei.project.issue.TestIssue2.TestIssue2Dto
 import kotlin.reflect.jvm.isAccessible

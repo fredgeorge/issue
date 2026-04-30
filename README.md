@@ -31,7 +31,7 @@ JSON strings and Base64 strings are supported. To the
 maximum extent possible, persistence implementation should
 reside in the persistence package.
 
-### Using the Issue model
+### Using the Issue Model
 
 Specific Issues for your domain implement the _Issue_
 interface. Unique values for a new Issue can be defined.

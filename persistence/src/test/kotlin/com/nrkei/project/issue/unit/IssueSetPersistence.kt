@@ -4,14 +4,15 @@
  * Licensed under the MIT License; see LICENSE file in root.
  */
 
-package com.nrkei.project.issue
+package com.nrkei.project.issue.unit
 
+import com.nrkei.project.issue.*
 import com.nrkei.project.issue.Encoding.fromBase64
 import com.nrkei.project.issue.Encoding.toBase64
 import com.nrkei.project.issue.IssueSet.IssueSetDto
 import com.nrkei.project.issue.TestIssue1.TestIssue1Dto
 import com.nrkei.project.issue.TestIssue2.TestIssue2Dto
-import com.nrkei.project.issue.TestIssuePersistence.toIssue
+import com.nrkei.project.issue.unit.TestIssuePersistence.toIssue
 import kotlinx.serialization.json.Json
 
 // Understands persistence of an IssueSet by converting
